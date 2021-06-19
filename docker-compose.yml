@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  vpn:
+    image: ghcr.io/bubuntux/nordvpn
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - USER=${USERNAME}
+      - PASS=${PASS}
+      - CONNECT=United_States
+      - TECHNOLOGY=NordLynx
+      - NETWORK=192.168.0.0/24
+    ports:
+      - 8080:8080
+      - 9000:9000
+  peerflix:
+    image: asapach/peerflix-server
+    network_mode: service:vpn
+    depends_on:
+      - vpn
+    volumes: 
+      - ${PEERFLIX_VOLUME}:/tmp/torrent-stream
+    user: ${DOCKER_UID}:${DOCKER_GID}
