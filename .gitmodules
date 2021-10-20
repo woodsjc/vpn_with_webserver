@@ -1,0 +1,3 @@
+[submodule "peerflix-server"]
+	path = peerflix-server
+	url = https://github.com/asapach/peerflix-server
