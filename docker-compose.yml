@@ -13,7 +13,12 @@ services:
       - NETWORK=192.168.0.0/24
     ports:
       - 8080:8080
-      - 9000:9000
+      - 8000:9000
+      - 7878:7878
+      - 9091:9091
+      - 8989:8989
+    restart: unless-stopped
+
   peerflix:
     image: asapach/peerflix-server
     build:
@@ -23,5 +28,56 @@ services:
     depends_on:
       - vpn
     volumes: 
+      - ${CONFIG}/peerflix:/app/config
       - ${PEERFLIX_VOLUME}:/tmp/torrent-stream
     user: ${DOCKER_UID}:${DOCKER_GID}
+    restart: unless-stopped
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    network_mode: host
+    volumes:
+      - ${CONFIG}/jellyfin:/config
+      - /home/yubs/media_share:/media:ro
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: service:vpn
+    volumes: 
+      - ${CONFIG}/radarr:/config
+      - ${RADARR_VOLUME}/movies:/movies
+      - ${RADARR_VOLUME}/downloads:/downloads
+    environment:
+      - PUID=${DOCKER_UID}
+      - PGUID=${DOCKER_GID}
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: service:vpn
+    volumes: 
+      - ${CONFIG}/sonarr:/config
+      - ${RADARR_VOLUME}/tv:/tv
+      - ${RADARR_VOLUME}/downloads:/downloads
+    environment:
+      - PUID=${DOCKER_UID}
+      - PGUID=${DOCKER_GID}
+    restart: unless-stopped
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    network_mode: service:vpn
+    volumes: 
+      - ${CONFIG}/transmission:/config
+      - ${RADARR_VOLUME}/torrents:/data/torrents
+      - ${RADARR_VOLUME}/downloads:/downloads
+    environment:
+      - PUID=${DOCKER_UID}
+      - PGUID=${DOCKER_GID}
+    restart: unless-stopped
+    
