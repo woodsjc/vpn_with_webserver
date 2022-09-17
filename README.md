@@ -20,5 +20,20 @@ Requires:
   * need to match volume write permissions
 * CONFIG
   * needed for running containers multiple times
-* RADARR_VOLUME
+* RADARR\_VOLUME
   * base folder for radarr, sonarr, transmission
+
+## Setup
+
+* linuxserver.io images
+  * (radarr)[https://docs.linuxserver.io/images/docker-radarr]
+  * (sonarr)[https://docs.linuxserver.io/images/docker-sonarr]
+  * (transmission)[https://docs.linuxserver.io/images/docker-transmission]
+    * can be swapped with other torrent
+  * (jellyfin)[https://docs.linuxserver.io/images/docker-jellyfin]
+    * can swap for plex, etc
+
+Pretty confusing to setup first time. Conflicting documentation between linuxserver
+and (servarr)[https://wiki.servarr.com/radarr] basically jumped around both to get
+setup. When radarr & sonarr running still need to add /movies, /tv, and /downloads
+for them to work correctly.
