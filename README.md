@@ -12,8 +12,6 @@ Requires:
 
 * USERNAME
 * PASS
-* PEERFLIX\_VOLUME
-  * only need this setup if want to persist data
 * DOCKER\_UID
   * need to match volume write permissions
 * DOCKER\_GID
@@ -32,6 +30,11 @@ Requires:
     * can be swapped with other torrent
   * (jellyfin)[https://docs.linuxserver.io/images/docker-jellyfin]
     * can swap for plex, etc
+  * (prowlarr)[https://github.com/linuxserver/docker-prowlarr]
+    * only develop and nightly tags
+    * requires some initial configuration to connect with sonarr
+      * index
+      * client
 
 Pretty confusing to setup first time. Conflicting documentation between linuxserver
 and (servarr)[https://wiki.servarr.com/radarr] basically jumped around both to get

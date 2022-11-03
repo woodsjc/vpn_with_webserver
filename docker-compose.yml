@@ -12,25 +12,12 @@ services:
       - TECHNOLOGY=NordLynx
       - NETWORK=192.168.0.0/24
     ports:
-      - 8080:8080
-      - 8000:9000
       - 7878:7878
-      - 9091:9091
+      - 8000:9000
       - 8989:8989
-    restart: unless-stopped
-
-  peerflix:
-    image: asapach/peerflix-server
-    build:
-        context: peerflix-server
-        dockerfile: Dockerfile
-    network_mode: service:vpn
-    depends_on:
-      - vpn
-    volumes: 
-      - ${CONFIG}/peerflix:/app/config
-      - ${PEERFLIX_VOLUME}:/tmp/torrent-stream
-    user: ${DOCKER_UID}:${DOCKER_GID}
+      - 9091:9091
+      - 9117:9117
+      - 9696:9696
     restart: unless-stopped
 
   jellyfin:
@@ -39,7 +26,7 @@ services:
     network_mode: host
     volumes:
       - ${CONFIG}/jellyfin:/config
-      - /home/yubs/media_share:/media:ro
+      - ${MEDIA_SHARE}:/media:ro
     restart: unless-stopped
 
   radarr:
@@ -81,3 +68,14 @@ services:
       - PGUID=${DOCKER_GID}
     restart: unless-stopped
     
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    network_mode: service:vpn
+    volumes:
+      - ${CONFIG}/prowlarr:/config
+    environment:
+      - PUID=${DOCKER_UID}
+      - PGUID=${DOCKER_GID}
+    restart: unless-stopped
+
