@@ -10,8 +10,9 @@ Requires:
 
 ## .env
 
-* USERNAME
-* PASS
+* ~USERNAME~
+* ~PASS~
+* TOKEN --- replaces user/password
 * DOCKER\_UID
   * need to match volume write permissions
 * DOCKER\_GID

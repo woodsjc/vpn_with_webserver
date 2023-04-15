@@ -6,8 +6,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - USER=${USERNAME}
-      - PASS=${PASS}
+      - TOKEN=${TOKEN}
       - CONNECT=United_States
       - TECHNOLOGY=NordLynx
       - NETWORK=192.168.0.0/24
