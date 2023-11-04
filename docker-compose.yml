@@ -2,14 +2,23 @@ version: '3'
 
 services:
   vpn:
-    image: ghcr.io/bubuntux/nordvpn
+    image: qmcgaw/gluetun
     cap_add:
       - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
     environment:
-      - TOKEN=${TOKEN}
-      - CONNECT=United_States
-      - TECHNOLOGY=NordLynx
-      - NETWORK=192.168.0.0/24
+      - DOT_START=off
+      - VPN_TYPE=openvpn
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=${VPN_USER}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+      - SERVER_COUNTRIES="United States"
+      - FIREWALL_OUTBOUND_SUBNETS=192.168.1.0/24
+      - HEALTH_VPN_DURATION_INITIAL=600s
+      - HEALTH_VPN_DURATION_ADDITION=600s
+      - HEALTH_SUCCESS_WAIT_DURATION=600s
+      - LOG_LEVEL=debug
     ports:
       - 7878:7878
       - 8000:9000
@@ -22,7 +31,11 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
-    network_mode: host
+    ports:
+      - 8096:8096
+    devices:
+      - '/dev/dri/renderD128:/dev/dri/renderD128'
+      - '/dev/dri/card0:/dev/dri/card0'
     volumes:
       - ${CONFIG}/jellyfin:/config
       - ${MEDIA_SHARE}:/media:ro
