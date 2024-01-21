@@ -47,8 +47,7 @@ services:
     network_mode: service:vpn
     volumes: 
       - ${CONFIG}/radarr:/config
-      - ${RADARR_VOLUME}/movies:/movies
-      - ${RADARR_VOLUME}/downloads:/downloads
+      - ${RADARR_VOLUME}:/data
     environment:
       - PUID=${DOCKER_UID}
       - PGUID=${DOCKER_GID}
@@ -60,8 +59,7 @@ services:
     network_mode: service:vpn
     volumes: 
       - ${CONFIG}/sonarr:/config
-      - ${RADARR_VOLUME}/tv:/tv
-      - ${RADARR_VOLUME}/downloads:/downloads
+      - ${RADARR_VOLUME}:/data
     environment:
       - PUID=${DOCKER_UID}
       - PGUID=${DOCKER_GID}
@@ -73,8 +71,7 @@ services:
     network_mode: service:vpn
     volumes: 
       - ${CONFIG}/transmission:/config
-      - ${RADARR_VOLUME}/torrents:/data/torrents
-      - ${RADARR_VOLUME}/downloads:/downloads
+      - ${RADARR_VOLUME}:/data
     environment:
       - PUID=${DOCKER_UID}
       - PGUID=${DOCKER_GID}
