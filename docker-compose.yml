@@ -94,7 +94,7 @@ services:
     container_name: jellyseer
     network_mode: service:vpn
     volumes:
-      - ${CONFIG}/jellyseerr:/config
+      - ${CONFIG}/jellyseerr:/app/config
     environment:
       - PUID=${DOCKER_UID}
       - PGUID=${DOCKER_GID}
