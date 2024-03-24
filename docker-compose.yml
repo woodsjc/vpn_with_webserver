@@ -20,6 +20,7 @@ services:
       - HEALTH_SUCCESS_WAIT_DURATION=600s
       - LOG_LEVEL=debug
     ports:
+      - 5055:5055
       - 7878:7878
       - 8000:9000
       - 8989:8989
@@ -88,3 +89,13 @@ services:
       - PGUID=${DOCKER_GID}
     restart: unless-stopped
 
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseer
+    network_mode: service:vpn
+    volumes:
+      - ${CONFIG}/jellyseerr:/config
+    environment:
+      - PUID=${DOCKER_UID}
+      - PGUID=${DOCKER_GID}
+    restart: unless-stopped
