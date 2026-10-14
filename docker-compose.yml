@@ -7,16 +7,15 @@ services:
       - /dev/net/tun:/dev/net/tun
     environment:
       - DOT_START=off
-      - VPN_TYPE=openvpn
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${VPN_KEY}
+      - WIREGUARD_MTU=1200
       - VPN_SERVICE_PROVIDER=nordvpn
-      - OPENVPN_USER=${VPN_USER}
-      - OPENVPN_PASSWORD=${VPN_PASSWORD}
-      - SERVER_COUNTRIES="United States"
+      - SERVER_COUNTRIES=United States
       - FIREWALL_OUTBOUND_SUBNETS=192.168.1.0/24
-      - HEALTH_VPN_DURATION_INITIAL=600s
-      - HEALTH_VPN_DURATION_ADDITION=600s
-      - HEALTH_SUCCESS_WAIT_DURATION=600s
-      - LOG_LEVEL=debug
+      - TZ=America/Chicago
+      - UPDATER_PERIOD=24h
+      - DNS_PLAINTEXT_ADDRESS=1.1.1.1
     ports:
       - 5055:5055
       - 7878:7878
@@ -87,16 +86,16 @@ services:
       - PGUID=${DOCKER_GID}
     restart: unless-stopped
 
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
     network_mode: service:vpn
     depends_on:
       - jellyfin
       - sonarr
       - radarr
     volumes:
-      - ${CONFIG}/jellyseerr:/app/config
+      - ${CONFIG}/seerr:/app/config
     environment:
       - PUID=${DOCKER_UID}
       - PGUID=${DOCKER_GID}
